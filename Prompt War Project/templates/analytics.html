@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header style="margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+    <div>
+        <h1 style="font-size: 2.2rem; margin-bottom: 5px;">Crowd Analytics</h1>
+        <p style="color: var(--text-secondary);">Real-time heatmap and occupancy prediction.</p>
+    </div>
+    <div style="display: flex; gap: 15px; font-size: 0.9rem; font-weight: 600;">
+        <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 12px; height: 12px; border-radius: 3px;" class="bg-free"></div> Free</div>
+        <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 12px; height: 12px; border-radius: 3px;" class="bg-medium"></div> Medium</div>
+        <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 12px; height: 12px; border-radius: 3px;" class="bg-busy"></div> Busy</div>
+    </div>
+</header>
+
+<div class="dashboard-grid">
+    <!-- Heatmap -->
+    <div class="glass status-card" style="grid-column: span 2;">
+        <h3>Stadium Heatmap</h3>
+        <div class="heatmap-container" id="crowd-heatmap">
+            <svg viewBox="0 0 600 400" width="100%" height="100%" style="max-height: 400px;">
+                <!-- Oval Track -->
+                <ellipse cx="300" cy="200" rx="280" ry="180" fill="none" stroke="var(--text-primary)" stroke-width="2" />
+                <ellipse cx="300" cy="200" rx="180" ry="100" fill="#e5e7eb" stroke="var(--text-primary)" stroke-width="2" />
+                <text x="300" y="205" text-anchor="middle" font-weight="bold" fill="var(--text-secondary)">PITCH</text>
+                
+                <!-- Zones -->
+                <path id="zone-North-Stand" d="M150,50 Q300,0 450,50 L400,120 Q300,90 200,120 Z" fill="var(--accent-emerald)" opacity="0.8" />
+                <path id="zone-South-Stand" d="M150,350 Q300,400 450,350 L400,280 Q300,310 200,280 Z" fill="var(--accent-emerald)" opacity="0.8" />
+                <path id="zone-East-Stand" d="M550,150 Q600,200 550,250 L480,220 Q500,200 480,180 Z" fill="var(--accent-emerald)" opacity="0.8" />
+                <path id="zone-West-Stand" d="M50,150 Q0,200 50,250 L120,220 Q100,200 120,180 Z" fill="var(--accent-emerald)" opacity="0.8" />
+                
+                <!-- Labels -->
+                <text x="300" y="45" text-anchor="middle" font-size="12" fill="white">NORTH</text>
+                <text x="300" y="365" text-anchor="middle" font-size="12" fill="white">SOUTH</text>
+                <text x="540" y="205" text-anchor="middle" font-size="12" fill="white">EAST</text>
+                <text x="60" y="205" text-anchor="middle" font-size="12" fill="white">WEST</text>
+            </svg>
+        </div>
+        <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px;">Interactive heatmap updates every 30 seconds.</p>
+    </div>
+
+    <!-- Stats Panel -->
+    <div class="glass status-card" style="display: flex; flex-direction: column; gap: 20px;">
+        <h3>Zone Occupancy</h3>
+        <div id="zone-stats-list">
+            {% for z in zones %}
+            <div class="zone-stat-item" style="margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="font-weight: 600;">{{ z.zone_name }}</span>
+                    <span class="text-{{ 'busy' if z.risk_level==2 else ('medium' if z.risk_level==1 else 'free') }}">{{ (z.capacity_current / z.capacity_total * 100)|round|int }}%</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden;">
+                    <div style="width: {{ (z.capacity_current / z.capacity_total * 100) }}%; height: 100%;" class="bg-{{ 'busy' if z.risk_level==2 else ('medium' if z.risk_level==1 else 'free') }}"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Prediction Chart -->
+    <div class="glass status-card" style="grid-column: span 3;">
+        <h3>AI Occupancy Prediction</h3>
+        <canvas id="occupancyChart" height="100"></canvas>
+    </div>
+</div>
+
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('occupancyChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['18:00', '18:30', '19:00', '19:30', '20:00 (Pred)', '20:30 (Pred)'],
+                datasets: [{
+                    label: 'Stadium Occupancy %',
+                    data: [20, 35, 65, 82, 95, 98],
+                    borderColor: '#c2a382',
+                    backgroundColor: 'rgba(194, 163, 130, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#2d232e'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

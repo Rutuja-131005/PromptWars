@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header style="margin-bottom: 40px;">
+    <h1 style="font-size: 2.2rem; margin-bottom: 5px;">Live Queue Monitor</h1>
+    <p style="color: var(--text-secondary);">Find the shortest queues around you.</p>
+</header>
+
+<div class="dashboard-grid">
+    <!-- Food & Drinks -->
+    <div class="glass status-card" style="grid-column: span 2;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-utensils"><path d="m3 2 1.74 12c.08.58.6 1 1.19 1h5.48c.56 0 1.05-.4 1.16-.96L14.5 2"/><path d="M9 3v5"/><path d="M11 3v5"/><path d="M7 3v5"/><path d="M20 2v13a4 4 0 0 1-4 4h-2a1 1 0 0 1-1-1V2"/></svg>
+            <h3 style="margin: 0; color: var(--text-primary);">Food & Beverages</h3>
+        </div>
+        <div class="queue-list" id="food-list">
+            {% for q in food %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div>
+                    <h4 style="font-size: 1.1rem;">{{ q.stall_name }}</h4>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">Nearest: North Stand</span>
+                </div>
+                <div style="text-align: right;">
+                    <div class="status-value text-{{ 'busy' if q.wait_time_mins > 15 else ('medium' if q.wait_time_mins > 8 else 'free') }}" style="font-size: 1.5rem;">
+                        {{ q.wait_time_mins }} <span style="font-size: 0.9rem; font-weight: 500;">min</span>
+                    </div>
+                    <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary);">Wait Time</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Washrooms -->
+        <div class="glass status-card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21v-6"/><path d="M20 21v-6"/><path d="M3 15h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2Z"/></svg>
+                <h3 style="margin: 0; color: var(--text-primary); font-size: 1rem;">Washrooms</h3>
+            </div>
+            <div id="toilet-list">
+                {% for q in toilets %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem;">
+                    <span style="color: var(--text-secondary);">{{ q.stall_name }}</span>
+                    <strong class="text-{{ 'busy' if q.wait_time_mins > 5 else 'free' }}">{{ q.wait_time_mins }}m</strong>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Parking -->
+        <div class="glass status-card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>
+                <h3 style="margin: 0; color: var(--text-primary); font-size: 1rem;">Parking Exits</h3>
+            </div>
+            <div id="parking-list">
+                {% for q in parking %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem;">
+                    <span style="color: var(--text-secondary);">{{ q.stall_name }}</span>
+                    <strong class="text-{{ 'busy' if q.wait_time_mins > 20 else 'free' }}">{{ q.wait_time_mins }}m</strong>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

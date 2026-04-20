@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Smart Navigation</h1>
+    <p style="color: var(--text-secondary);">Interactive stadium map and real-time route optimization.</p>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+    <!-- Interactive Map -->
+    <div class="glass status-card" style="padding: 0; overflow: hidden; position: relative;">
+        <div style="padding: 20px; position: absolute; top: 0; left: 0; z-index: 10; display: flex; gap: 10px;">
+            <button class="btn-primary" style="padding: 8px 15px; font-size: 0.8rem; background: var(--bg-secondary); color: white;">Restrooms</button>
+            <button class="btn-primary" style="padding: 8px 15px; font-size: 0.8rem; background: var(--bg-secondary); color: white;">Food Court</button>
+            <button class="btn-primary" style="padding: 8px 15px; font-size: 0.8rem; background: var(--bg-secondary); color: white;">Exit Gates</button>
+        </div>
+        
+        <div class="heatmap-container" style="background: rgba(0,0,0,0.2); height: 500px;">
+            <!-- Simplified Stadium SVG -->
+            <svg width="100%" height="100%" viewBox="0 0 800 500">
+                <ellipse cx="400" cy="250" rx="350" ry="200" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="40"/>
+                <ellipse cx="400" cy="250" rx="300" ry="150" fill="rgba(16, 185, 129, 0.05)" stroke="var(--accent-emerald)" stroke-width="2"/>
+                
+                <!-- POI Markers -->
+                <circle cx="200" cy="150" r="8" fill="var(--accent-amber)" />
+                <circle cx="600" cy="350" r="8" fill="var(--accent-gold)" />
+                <circle cx="400" cy="50" r="10" fill="var(--accent-crimson)" />
+                
+                <text x="360" y="260" fill="white" font-size="24" font-weight="bold">PLAYING FIELD</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Navigation Sidebar -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div class="glass status-card" style="border: 1px solid var(--accent-gold);">
+            <h3>Your Destination</h3>
+            <p style="color: var(--text-secondary); margin-top: 10px;">Suggested Entry: <strong style="color: var(--text-primary);">Gate 4</strong></p>
+            <p style="color: var(--text-secondary);">Section: <strong style="color: var(--text-primary);">East Stand, Block B</strong></p>
+            <button class="btn-primary" style="width: 100%; margin-top: 25px;">Find My Seat</button>
+        </div>
+
+        <div class="glass status-card">
+            <h3>Quick Actions</h3>
+            <div style="margin-top: 15px; display: grid; gap: 10px;">
+                <button class="btn-primary" style="background: rgba(255,255,255,0.05); color: white; text-align: left; padding: 15px;">
+                    <div style="font-weight: 600;">Nearest Restroom</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">3 min walk • Low Crowd</div>
+                </button>
+                <button class="btn-primary" style="background: rgba(255,255,255,0.05); color: white; text-align: left; padding: 15px;">
+                    <div style="font-weight: 600;">Official Merchandise</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Gate 1 • 6 min walk</div>
+                </button>
+                <button class="btn-primary" style="background: rgba(255,255,255,0.05); color: var(--accent-crimson); text-align: left; padding: 15px;">
+                    <div style="font-weight: 600;">Emergency Exit Route</div>
+                    <div style="font-size: 0.8rem;">Highlighting shortest path...</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

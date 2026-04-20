@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="text-align: center; max-width: 900px; margin: 80px auto;">
+    <h1 style="font-size: 4.5rem; line-height: 1.1; margin-bottom: 30px; letter-spacing: -2px;">Elevate Every <br><span style="color: var(--accent-gold);">Moment</span> of the Game.</h1>
+    <p style="font-size: 1.4rem; color: var(--text-secondary); margin-bottom: 40px;">The next-generation smart stadium companion. Real-time crowd management, intelligent navigation, and live queue monitoring at your fingertips.</p>
+    
+    <div style="display: flex; gap: 20px; justify-content: center;">
+        <a href="{{ url_for('register') }}" class="btn-primary" style="padding: 1.2rem 2.5rem; font-size: 1.1rem;">Join the Experience</a>
+        <a href="#features" class="btn-primary" style="background: white; color: var(--text-primary); border: 1px solid rgba(0,0,0,0.1); padding: 1.2rem 2.5rem; font-size: 1.1rem;">Learn More</a>
+    </div>
+
+    <div class="dashboard-grid" style="margin-top: 100px;">
+        <div class="glass status-card" style="border-top: 4px solid var(--accent-emerald);">
+            <svg width="40" height="40" style="margin-bottom: 15px; color: var(--accent-emerald);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <h3>Smart Crowd</h3>
+            <p>Predictive zone analytics to bypass the bustle.</p>
+        </div>
+        <div class="glass status-card" style="border-top: 4px solid var(--accent-amber);">
+            <svg width="40" height="40" style="margin-bottom: 15px; color: var(--accent-amber);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <h3>Zero Wait</h3>
+            <p>Live queue tracking for food and amenities.</p>
+        </div>
+        <div class="glass status-card" style="border-top: 4px solid var(--accent-gold);">
+            <svg width="40" height="40" style="margin-bottom: 15px; color: var(--accent-gold);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+            <h3>VIP Access</h3>
+            <p>Smart navigation tailored to your ticket tier.</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 120px; text-align: left;" id="features">
+        <h2 style="font-size: 2.5rem; margin-bottom: 50px;">Real-time Intelligence, <br>Seamless Experience.</h2>
+        <div class="glass" style="height: 400px; display: flex; align-items: center; justify-content: center; background: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(253, 252, 251, 0.9), transparent);"></div>
+            <div style="position: relative; padding: 60px; max-width: 500px;">
+                <h3 style="font-size: 2rem; margin-bottom: 20px;">Safety First.</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 30px;">Integrated emergency response systems and lost-child reporting to ensure a secure environment for all fans.</p>
+                <a href="{{ url_for('register') }}" class="btn-primary" style="background: var(--accent-crimson);">View Safety Protocol</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

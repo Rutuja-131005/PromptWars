@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header style="margin-bottom: 40px;">
+    <h1 style="font-size: 2.2rem; margin-bottom: 5px;">Admin Control Center</h1>
+    <p style="color: var(--text-secondary);">Manage crowd flow, queues, and emergency alerts.</p>
+</header>
+
+<div class="dashboard-grid">
+    <!-- Quick Stats -->
+    <div class="glass status-card" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3>Total Attendance</h3>
+            <div class="status-value">2,842</div>
+        </div>
+        <svg width="40" height="40" style="color: var(--accent-gold);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div class="glass status-card" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3>Queue Avg (Food)</h3>
+            <div class="status-value text-medium">14m</div>
+        </div>
+        <svg width="40" height="40" style="color: var(--accent-amber);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <div class="glass status-card" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3>Risk Zones</h3>
+            <div class="status-value text-free">0</div>
+        </div>
+        <svg width="40" height="40" style="color: var(--accent-emerald);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+    <!-- Manage Zones -->
+    <div class="glass status-card">
+        <h3>System Monitors</h3>
+        <div style="margin-top: 25px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 2px solid rgba(0,0,0,0.05); color: var(--text-secondary); font-size: 0.9rem;">
+                        <th style="padding: 15px;">Zone / Stall</th>
+                        <th style="padding: 15px;">Status</th>
+                        <th style="padding: 15px;">Live Metric</th>
+                        <th style="padding: 15px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for z in zones %}
+                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.025);">
+                        <td style="padding: 15px; font-weight: 600;">{{ z.zone_name }}</td>
+                        <td style="padding: 15px;"><span class="text-{{ 'busy' if z.risk_level==2 else ('medium' if z.risk_level==1 else 'free') }}" style="font-weight: 700; text-transform: uppercase; font-size: 0.8rem;">● {{ 'HIGH' if z.risk_level==2 else ('MEDIUM' if z.risk_level==1 else 'LOW') }}</span></td>
+                        <td style="padding: 15px;">{{ z.capacity_current }} / {{ z.capacity_total }}</td>
+                        <td style="padding: 15px;"><button style="background: none; border: none; color: var(--accent-gold); font-weight: 600; cursor: pointer;">Optimize</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Create Alert -->
+    <div class="glass status-card">
+        <h3>Broadcast Alert</h3>
+        <form id="adminBroadcastForm" style="margin-top: 20px;">
+            <div class="form-group">
+                <label>Alert Title</label>
+                <input type="text" name="title" class="form-input" placeholder="e.g. Goal Scored!">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea name="message" class="form-input" style="height: 100px; resize: none;" placeholder="Message to all fans..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type" class="form-input">
+                    <option value="info">Info</option>
+                    <option value="event">Event Update</option>
+                    <option value="emergency">Emergency</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Send Broadcast Now</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

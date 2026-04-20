@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 style="color: var(--accent-crimson);">Emergency & Safety</h1>
+    <p style="color: var(--text-secondary);">Direct line to stadium medical, security, and facility teams.</p>
+</div>
+
+<div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+    <!-- SOS Button -->
+    <div class="glass status-card" style="text-align: center; border: 2px solid var(--accent-crimson); padding: 50px 30px;">
+        <div id="sosTrigger" style="width: 100px; height: 100px; background: var(--accent-crimson); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(220, 38, 38, 0.3); cursor: pointer; transition: transform 0.2s;">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 15px;">SOS Signal</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 30px;">Instantly alert onsite security and medical teams of your location.</p>
+    </div>
+
+    <!-- Specific Requests -->
+    <div class="glass status-card" style="grid-column: span 2;">
+        <h3>Request Assistance</h3>
+        <form action="{{ url_for('emergency') }}" method="POST" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label>Issue Type</label>
+                <select name="type" class="form-input">
+                    <option value="medical">Medical Assistance</option>
+                    <option value="security">Security Concern</option>
+                    <option value="lost">Lost Person/Child</option>
+                    <option value="facility">Facility Issue (Water/Cleanliness)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Your Current Location (Near Stand/Section)</label>
+                <input type="text" name="location" class="form-input" placeholder="e.g. Section B, Row 5" required>
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Additional Details</label>
+                <textarea name="message" class="form-input" style="height: 100px; resize: none;" placeholder="Please provide more context..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="grid-column: span 2;">Submit Assistance Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
